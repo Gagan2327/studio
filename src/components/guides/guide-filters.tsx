@@ -1,4 +1,3 @@
-
 'use client';
 
 import { useState, useMemo } from 'react';
@@ -17,18 +16,28 @@ import { Badge } from '@/components/ui/badge';
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from '@/components/ui/command';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { indianStatesAndCities } from '@/lib/india-data';
+import { Calendar } from '../ui/calendar';
+import { CalendarIcon, Search } from 'lucide-react';
+import { cn } from '@/lib/utils';
+import { format } from 'date-fns';
 
 const interests = [
   'History', 'Art & Culture', 'Food', 'Adventure', 'Nature', 'Shopping', 'Nightlife', 'Spiritual'
 ];
 const languages = ['English', 'Hindi', 'Spanish', 'French', 'German'];
 
-export function GuideFilters() {
+interface GuideFiltersProps {
+    onSearch: (city: string, date?: Date) => void;
+    loading: boolean;
+}
+
+export function GuideFilters({ onSearch, loading }: GuideFiltersProps) {
   const [selectedState, setSelectedState] = useState('');
   const [city, setCity] = useState('');
   const [cityPopoverOpen, setCityPopoverOpen] = useState(false);
   const [selectedInterests, setSelectedInterests] = useState<string[]>([]);
   const [maxPrice, setMaxPrice] = useState(500);
+  const [date, setDate] = useState<Date>();
 
   const cities = useMemo(() => {
     if (!selectedState) return [];
@@ -50,6 +59,12 @@ export function GuideFilters() {
   const handleCitySelect = (currentValue: string) => {
     setCity(currentValue === city ? "" : currentValue);
     setCityPopoverOpen(false);
+  }
+
+  const handleSearchClick = () => {
+    if (city) {
+      onSearch(city, date);
+    }
   }
 
   return (
@@ -106,6 +121,31 @@ export function GuideFilters() {
             </PopoverContent>
           </Popover>
         </div>
+         <div className="space-y-2">
+            <Label htmlFor="date">Date</Label>
+             <Popover>
+                <PopoverTrigger asChild>
+                <Button
+                    variant={"outline"}
+                    className={cn(
+                    "w-full justify-start text-left font-normal",
+                    !date && "text-muted-foreground"
+                    )}
+                >
+                    <CalendarIcon className="mr-2 h-4 w-4" />
+                    {date ? format(date, "PPP") : <span>Pick a date</span>}
+                </Button>
+                </PopoverTrigger>
+                <PopoverContent className="w-auto p-0">
+                <Calendar
+                    mode="single"
+                    selected={date}
+                    onSelect={setDate}
+                    initialFocus
+                />
+                </PopoverContent>
+            </Popover>
+        </div>
         <div className="space-y-2">
           <Label htmlFor="language">Language</Label>
           <Select>
@@ -151,6 +191,12 @@ export function GuideFilters() {
             onValueChange={([value]) => setMaxPrice(value)}
             className="w-full"
           />
+        </div>
+         <div className="lg:col-span-3">
+            <Button onClick={handleSearchClick} disabled={!city || loading} className="w-full" size="lg">
+                {loading ? 'Searching...' : 'Search Guides'}
+                <Search className="ml-2 h-5 w-5" />
+            </Button>
         </div>
       </div>
     </div>

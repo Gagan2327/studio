@@ -1,47 +1,32 @@
 'use client';
 
-import { useState, useMemo } from 'react';
-import { Search, Calendar as CalendarIcon, Filter } from 'lucide-react';
-import { format } from 'date-fns';
+import { useState } from 'react';
 import { suggestGuidesByLocation } from '@/ai/flows/suggest-guides-by-location';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
 import { useToast } from '@/hooks/use-toast';
 import type { Guide } from '@/lib/types';
 import { GuideList } from './guide-list';
 import { GuideSkeleton } from './guide-skeleton';
-import { Popover, PopoverContent, PopoverTrigger, PopoverAnchor } from '@/components/ui/popover';
-import { Command, CommandEmpty, CommandGroup, CommandItem, CommandList } from '@/components/ui/command';
-import { Calendar } from '@/components/ui/calendar';
-import { cn } from '@/lib/utils';
-import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle, SheetTrigger } from '@/components/ui/sheet';
 import { GuideFilters } from './guide-filters';
-
-const locations = ['Roorkee', 'Dehradun', 'Haridwar'];
+import { format } from 'date-fns';
 
 export function SearchGuides() {
-  const [inputValue, setInputValue] = useState('');
   const [loading, setLoading] = useState(false);
   const [guides, setGuides] = useState<Guide[]>([]);
   const [hasSearched, setHasSearched] = useState(false);
   const { toast } = useToast();
-  const [popoverOpen, setPopoverOpen] = useState(false);
-  const [date, setDate] = useState<Date>();
 
-  const handleSearch = async (searchQuery: string) => {
-    if (!searchQuery.trim()) return;
+  const handleSearch = async (city: string, date?: Date) => {
+    if (!city.trim()) return;
 
-    setInputValue(searchQuery);
     setLoading(true);
     setHasSearched(true);
     setGuides([]);
-    setPopoverOpen(false);
 
     try {
       if (date) {
-        console.log('Searching for guides on:', format(date, 'PPP'));
+        console.log('Searching for guides in', city, 'on:', format(date, 'PPP'));
       }
-      const result = await suggestGuidesByLocation({ location: searchQuery });
+      const result = await suggestGuidesByLocation({ location: city });
       if (result && result.guides) {
         setGuides(result.guides);
       } else {
@@ -59,14 +44,6 @@ export function SearchGuides() {
     }
   };
   
-  const handleFormSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    // This function can be triggered by a search button if you add one to the filters.
-    // For now, we can decide how to trigger search. Maybe a button in the filters?
-    // For demonstration, let's assume a search can be triggered.
-    // We would get the selected city from the filter state.
-  }
-
   return (
     <div className="container mx-auto max-w-7xl">
       <div className="text-center mb-12 animate-in fade-in slide-in-from-top-4 duration-500">
@@ -74,12 +51,12 @@ export function SearchGuides() {
           Find Your Local Expert
         </h1>
         <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-          Enter a city, landmark, or region to discover amazing guides ready to show you around.
+          Use the filters below to discover amazing guides ready to show you around.
         </p>
       </div>
       
       <div className="max-w-3xl mx-auto mb-12">
-        <GuideFilters />
+        <GuideFilters onSearch={handleSearch} loading={loading} />
       </div>
       
       {loading && <GuideSkeleton />}
