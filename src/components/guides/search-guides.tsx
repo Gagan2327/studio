@@ -28,13 +28,6 @@ export function SearchGuides() {
   const [popoverOpen, setPopoverOpen] = useState(false);
   const [date, setDate] = useState<Date>();
 
-  const filteredLocations = useMemo(() => {
-    if (!inputValue) return [];
-    return locations.filter((location) =>
-      location.toLowerCase().includes(inputValue.toLowerCase())
-    );
-  }, [inputValue]);
-
   const handleSearch = async (searchQuery: string) => {
     if (!searchQuery.trim()) return;
 
@@ -68,22 +61,11 @@ export function SearchGuides() {
   
   const handleFormSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    handleSearch(inputValue);
+    // This function can be triggered by a search button if you add one to the filters.
+    // For now, we can decide how to trigger search. Maybe a button in the filters?
+    // For demonstration, let's assume a search can be triggered.
+    // We would get the selected city from the filter state.
   }
-
-  const handleSuggestionClick = (location: string) => {
-    handleSearch(location);
-  };
-
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value;
-    setInputValue(value);
-    if (value.length > 0) {
-      setPopoverOpen(true);
-    } else {
-      setPopoverOpen(false);
-    }
-  };
 
   return (
     <div className="container mx-auto max-w-7xl">
@@ -96,78 +78,9 @@ export function SearchGuides() {
         </p>
       </div>
       
-      <div className="max-w-3xl mx-auto mb-8">
+      <div className="max-w-3xl mx-auto mb-12">
         <GuideFilters />
       </div>
-
-      <form onSubmit={handleFormSubmit} className="flex w-full max-w-2xl mx-auto items-start md:items-center space-y-2 md:space-y-0 md:space-x-2 mb-12 flex-col md:flex-row">
-        <Popover open={popoverOpen} onOpenChange={setPopoverOpen}>
-          <PopoverAnchor asChild>
-            <div className="w-full">
-              <Input
-                type="search"
-                placeholder="e.g., Haridwar"
-                value={inputValue}
-                onChange={handleInputChange}
-                onFocus={() => { if (inputValue) setPopoverOpen(true)}}
-                className="h-12 text-lg"
-                aria-label="Search for a location"
-                autoComplete="off"
-              />
-            </div>
-          </PopoverAnchor>
-          <PopoverContent onOpenAutoFocus={(e) => e.preventDefault()} className="p-0 w-[--radix-popover-trigger-width]">
-            <Command>
-              <CommandList>
-                {filteredLocations.length > 0 ? (
-                  <CommandGroup>
-                    {filteredLocations.map((location) => (
-                      <CommandItem
-                        key={location}
-                        value={location}
-                        onSelect={() => handleSuggestionClick(location)}
-                        className="cursor-pointer"
-                      >
-                        {location}
-                      </CommandItem>
-                    ))}
-                  </CommandGroup>
-                ) : (
-                  !loading && <CommandEmpty>No location found.</CommandEmpty>
-                )}
-              </CommandList>
-            </Command>
-          </PopoverContent>
-        </Popover>
-
-        <Popover>
-          <PopoverTrigger asChild>
-            <Button
-              variant={"outline"}
-              className={cn(
-                "w-full md:w-auto h-12 text-lg justify-start text-left font-normal",
-                !date && "text-muted-foreground"
-              )}
-            >
-              <CalendarIcon className="mr-2 h-5 w-5" />
-              {date ? format(date, "PPP") : <span className="text-base">Pick a date</span>}
-            </Button>
-          </PopoverTrigger>
-          <PopoverContent className="w-auto p-0">
-            <Calendar
-              mode="single"
-              selected={date}
-              onSelect={setDate}
-              initialFocus
-            />
-          </PopoverContent>
-        </Popover>
-
-        <Button type="submit" size="lg" disabled={loading} className="h-12 w-full md:w-auto">
-          <Search className="mr-2 h-5 w-5" />
-          Search
-        </Button>
-      </form>
       
       {loading && <GuideSkeleton />}
       {!loading && hasSearched && <GuideList guides={guides} />}
