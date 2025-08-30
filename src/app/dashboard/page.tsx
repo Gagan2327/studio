@@ -1,5 +1,6 @@
 'use client';
 
+import { useState } from 'react';
 import { SearchGuides } from '@/components/guides/search-guides';
 import Logo from '@/components/logo';
 import {
@@ -8,6 +9,7 @@ import {
   CreditCard,
   HelpCircle,
   History,
+  Home,
   LogOut,
   Settings,
   User,
@@ -22,7 +24,6 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import {
   Card,
   CardContent,
@@ -33,6 +34,7 @@ import {
 import { Label } from '@/components/ui/label';
 import { Input } from '@/components/ui/input';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { cn } from '@/lib/utils';
 
 function ProfileTab() {
   return (
@@ -98,8 +100,10 @@ function ProfileTab() {
 }
 
 export default function DashboardPage() {
+  const [activeTab, setActiveTab] = useState('suggestions');
+
   return (
-    <main className="min-h-screen bg-background">
+    <main className="min-h-screen bg-background pb-20">
        <header className="sticky top-0 z-40 w-full border-b bg-background">
         <div className="container flex h-16 items-center space-x-4 sm:justify-between sm:space-x-0">
           <div className="flex gap-6 md:gap-10">
@@ -125,7 +129,7 @@ export default function DashboardPage() {
                       <User className="mr-2 h-4 w-4" />
                       <span>About</span>
                     </DropdownMenuItem>
-                     <DropdownMenuItem>
+                     <DropdownMenuItem onClick={() => setActiveTab('profile')}>
                       <Settings className="mr-2 h-4 w-4" />
                       <span>Profile</span>
                     </DropdownMenuItem>
@@ -156,19 +160,34 @@ export default function DashboardPage() {
       </header>
 
       <div className="container py-8">
-        <Tabs defaultValue="suggestions" className="w-full">
-          <TabsList className="grid w-full grid-cols-2 max-w-md mx-auto mb-12">
-            <TabsTrigger value="suggestions">Suggestions</TabsTrigger>
-            <TabsTrigger value="profile">Profile</TabsTrigger>
-          </TabsList>
-          <TabsContent value="suggestions">
-            <SearchGuides />
-          </TabsContent>
-          <TabsContent value="profile">
-            <ProfileTab />
-          </TabsContent>
-        </Tabs>
+        {activeTab === 'suggestions' && <SearchGuides />}
+        {activeTab === 'profile' && <ProfileTab />}
       </div>
+
+      <nav className="fixed bottom-0 left-0 right-0 z-40 border-t bg-background shadow-t-lg md:hidden">
+        <div className="grid h-16 grid-cols-2">
+            <button
+                onClick={() => setActiveTab('suggestions')}
+                className={cn(
+                    'flex flex-col items-center justify-center gap-1 text-sm font-medium transition-colors',
+                    activeTab === 'suggestions' ? 'text-primary' : 'text-muted-foreground hover:bg-muted'
+                )}
+            >
+                <Home className="h-5 w-5" />
+                <span>Suggestions</span>
+            </button>
+            <button
+                onClick={() => setActiveTab('profile')}
+                className={cn(
+                    'flex flex-col items-center justify-center gap-1 text-sm font-medium transition-colors',
+                    activeTab === 'profile' ? 'text-primary' : 'text-muted-foreground hover:bg-muted'
+                )}
+            >
+                <User className="h-5 w-5" />
+                <span>Profile</span>
+            </button>
+        </div>
+      </nav>
     </main>
   );
 }
