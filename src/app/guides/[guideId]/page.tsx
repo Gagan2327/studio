@@ -4,7 +4,7 @@ import { Suspense, useState } from 'react';
 import { useSearchParams } from 'next/navigation';
 import Image from 'next/image';
 import Link from 'next/link';
-import { ArrowLeft, Phone, UserPlus, MessageSquare } from 'lucide-react';
+import { ArrowLeft, Phone, UserPlus, MessageSquare, Calendar as CalendarIcon, Clock, Users } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -13,16 +13,37 @@ import { StarRating } from '@/components/guides/star-rating';
 import { Skeleton } from '@/components/ui/skeleton';
 import { ChatInterface } from '@/components/chat/chat-interface';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger, DialogDescription, DialogFooter } from '@/components/ui/dialog';
+import { Label } from '@/components/ui/label';
+import { Input } from '@/components/ui/input';
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
+import { Calendar } from '@/components/ui/calendar';
+import { format } from 'date-fns';
+import { cn } from '@/lib/utils';
+import { useToast } from '@/hooks/use-toast';
+
 
 function GuideProfileContent() {
   const searchParams = useSearchParams();
   const guideData = searchParams.get('data');
+  const [date, setDate] = useState<Date>();
+  const [isBooked, setIsBooked] = useState(false);
+  const { toast } = useToast();
 
   if (!guideData) {
     return <GuideProfileSkeleton />;
   }
 
   const guide: Guide = JSON.parse(decodeURIComponent(guideData));
+
+  const handleBooking = (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsBooked(true);
+    toast({
+        title: "Booking Confirmed!",
+        description: `You have successfully booked ${guide.name}.`,
+    });
+  }
 
   return (
     <div className="w-full max-w-4xl mx-auto animate-in fade-in slide-in-from-bottom-4 duration-500">
@@ -82,10 +103,77 @@ function GuideProfileContent() {
                 <ChatInterface guideName={guide.name} />
               </SheetContent>
             </Sheet>
-            <Button size="lg" className="transition-transform hover:scale-105">
-              <UserPlus className="mr-2 h-5 w-5" />
-              Hire Now
-            </Button>
+            <Dialog onOpenChange={(open) => !open && setIsBooked(false)}>
+              <DialogTrigger asChild>
+                <Button size="lg" className="transition-transform hover:scale-105">
+                  <UserPlus className="mr-2 h-5 w-5" />
+                  Hire Now
+                </Button>
+              </DialogTrigger>
+              <DialogContent className="sm:max-w-md">
+                <DialogHeader>
+                  <DialogTitle>Book {guide.name}</DialogTitle>
+                  <DialogDescription>
+                    Complete the details below to schedule your tour.
+                  </DialogDescription>
+                </DialogHeader>
+                {isBooked ? (
+                    <div className="py-8 text-center">
+                        <h3 className="text-2xl font-bold text-primary">Booking Confirmed!</h3>
+                        <p className="text-muted-foreground mt-2">Your tour with {guide.name} is scheduled. Check your email for details.</p>
+                    </div>
+                ) : (
+                <form onSubmit={handleBooking} className="space-y-4">
+                    <div className="flex items-center justify-between rounded-lg border p-3 bg-muted/50">
+                        <span className="font-semibold">Rate</span>
+                        <span className="text-primary font-bold text-lg">${guide.ratePerHour}/hour</span>
+                    </div>
+                  <div className="grid grid-cols-2 gap-4">
+                    <div className="space-y-2">
+                        <Label htmlFor="days">Number of Days</Label>
+                        <Input id="days" type="number" defaultValue="1" min="1"/>
+                    </div>
+                    <div className="space-y-2">
+                        <Label htmlFor="members">Number of Members</Label>
+                        <Input id="members" type="number" defaultValue="1" min="1" />
+                    </div>
+                  </div>
+                   <div className="space-y-2">
+                    <Label htmlFor="date">Date</Label>
+                     <Popover>
+                        <PopoverTrigger asChild>
+                        <Button
+                            variant={"outline"}
+                            className={cn(
+                            "w-full justify-start text-left font-normal",
+                            !date && "text-muted-foreground"
+                            )}
+                        >
+                            <CalendarIcon className="mr-2 h-4 w-4" />
+                            {date ? format(date, "PPP") : <span>Pick a date</span>}
+                        </Button>
+                        </PopoverTrigger>
+                        <PopoverContent className="w-auto p-0">
+                        <Calendar
+                            mode="single"
+                            selected={date}
+                            onSelect={setDate}
+                            initialFocus
+                        />
+                        </PopoverContent>
+                    </Popover>
+                  </div>
+                   <div className="space-y-2">
+                    <Label htmlFor="duration">Time Duration (in hours)</Label>
+                    <Input id="duration" type="number" placeholder="e.g., 3" min="1"/>
+                  </div>
+                  <DialogFooter className="pt-4">
+                    <Button type="submit" className="w-full">Confirm Booking</Button>
+                  </DialogFooter>
+                </form>
+                )}
+              </DialogContent>
+            </Dialog>
           </div>
         </CardContent>
       </Card>
