@@ -59,6 +59,45 @@ const suggestGuidesByLocationFlow = ai.defineFlow(
     outputSchema: SuggestGuidesByLocationOutputSchema,
   },
   async input => {
+    if (input.location.toLowerCase().trim() === 'roorkee') {
+      return {
+        guides: [
+          {
+            guideId: '1',
+            name: 'Aarav Sharma',
+            photoUrl: 'https://picsum.photos/300/300?random=1',
+            rating: 4.8,
+            tags: ['History', 'Architecture', 'IIT Roorkee'],
+            description: 'Enthusiastic history buff and architecture lover, showing you the gems of IIT Roorkee and the city\'s past.',
+          },
+          {
+            guideId: '2',
+            name: 'Priya Singh',
+            photoUrl: 'https://picsum.photos/300/300?random=2',
+            rating: 4.9,
+            tags: ['Foodie', 'Local Cuisine', 'Street Food'],
+            description: 'Join me on a culinary journey through Roorkee\'s best street food and local eateries.',
+          },
+          {
+            guideId: '3',
+            name: 'Rohan Gupta',
+            photoUrl: 'https://picsum.photos/300/300?random=3',
+            rating: 4.7,
+            tags: ['Adventure', 'Nature', 'Ganges Canal'],
+            description: 'Explorer and nature enthusiast. Let\'s discover the natural beauty around Roorkee and the Upper Ganges Canal.',
+          },
+          {
+            guideId: '4',
+            name: 'Meera Chauhan',
+            photoUrl: 'https://picsum.photos/300/300?random=4',
+            rating: 4.8,
+            tags: ['Spiritual', 'Temples', 'Yoga'],
+            description: 'Find peace and spiritual solace. I specialize in tours of local temples and serene yoga spots.',
+          },
+        ],
+      };
+    }
+
     const {output} = await prompt(input);
     return output!;
   }
