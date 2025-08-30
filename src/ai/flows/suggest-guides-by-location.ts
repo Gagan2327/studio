@@ -67,7 +67,7 @@ const suggestGuidesByLocationFlow = ai.defineFlow(
           {
             guideId: '1',
             name: 'Aarav Sharma',
-            photoUrl: 'https://picsum.photos/300/300?random=1',
+            photoUrl: 'https://i.pravatar.cc/300?u=a042581f4e29026704d',
             rating: 4.8,
             ratePerHour: 25,
             tags: ['History', 'Architecture', 'IIT Roorkee'],
@@ -76,7 +76,7 @@ const suggestGuidesByLocationFlow = ai.defineFlow(
           {
             guideId: '2',
             name: 'Priya Singh',
-            photoUrl: 'https://picsum.photos/300/300?random=2',
+            photoUrl: 'https://i.pravatar.cc/300?u=a042581f4e29026704e',
             rating: 4.9,
             ratePerHour: 30,
             tags: ['Foodie', 'Local Cuisine', 'Street Food'],
@@ -85,7 +85,7 @@ const suggestGuidesByLocationFlow = ai.defineFlow(
           {
             guideId: '3',
             name: 'Rohan Gupta',
-            photoUrl: 'https://picsum.photos/300/300?random=3',
+            photoUrl: 'https://i.pravatar.cc/300?u=a042581f4e29026704f',
             rating: 4.7,
             ratePerHour: 20,
             tags: ['Adventure', 'Nature', 'Ganges Canal'],
@@ -94,7 +94,7 @@ const suggestGuidesByLocationFlow = ai.defineFlow(
           {
             guideId: '4',
             name: 'Meera Chauhan',
-            photoUrl: 'https://picsum.photos/300/300?random=4',
+            photoUrl: 'https://i.pravatar.cc/300?u=a042581f4e29026704a',
             rating: 4.8,
             ratePerHour: 28,
             tags: ['Spiritual', 'Temples', 'Yoga'],
@@ -108,7 +108,7 @@ const suggestGuidesByLocationFlow = ai.defineFlow(
                 {
                     guideId: '5',
                     name: 'Kavya Joshi',
-                    photoUrl: 'https://picsum.photos/300/300?random=5',
+                    photoUrl: 'https://i.pravatar.cc/300?u=a042581f4e29026704b',
                     rating: 4.9,
                     ratePerHour: 35,
                     tags: ['Sightseeing', 'Mussoorie', 'Cafes'],
@@ -117,7 +117,7 @@ const suggestGuidesByLocationFlow = ai.defineFlow(
                 {
                     guideId: '6',
                     name: 'Arjun Negi',
-                    photoUrl: 'https://picsum.photos/300/300?random=6',
+                    photoUrl: 'https://i.pravatar.cc/300?u=a042581f4e29026704c',
                     rating: 4.8,
                     ratePerHour: 30,
                     tags: ['Trekking', 'Robber\'s Cave', 'Nature'],
@@ -126,7 +126,7 @@ const suggestGuidesByLocationFlow = ai.defineFlow(
                 {
                     guideId: '7',
                     name: 'Ishaan Verma',
-                    photoUrl: 'https://picsum.photos/300/300?random=7',
+                    photoUrl: 'https://i.pravatar.cc/300?u=a042581f4e29026705d',
                     rating: 4.7,
                     ratePerHour: 28,
                     tags: ['Forest Research Institute', 'History', 'Museums'],
@@ -135,7 +135,7 @@ const suggestGuidesByLocationFlow = ai.defineFlow(
                 {
                     guideId: '8',
                     name: 'Diya Bhandari',
-                    photoUrl: 'https://picsum.photos/300/300?random=8',
+                    photoUrl: 'https://i.pravatar.cc/300?u=a042581f4e29026706e',
                     rating: 4.9,
                     ratePerHour: 32,
                     tags: ['Shopping', 'Local Markets', 'Food'],
@@ -149,7 +149,7 @@ const suggestGuidesByLocationFlow = ai.defineFlow(
                  {
                     guideId: '9',
                     name: 'Aditi Sharma',
-                    photoUrl: 'https://picsum.photos/300/300?random=9',
+                    photoUrl: 'https://i.pravatar.cc/300?u=a042581f4e29026707f',
                     rating: 4.9,
                     ratePerHour: 40,
                     tags: ['Spiritual', 'Ganga Aarti', 'Temples'],
@@ -158,7 +158,7 @@ const suggestGuidesByLocationFlow = ai.defineFlow(
                 {
                     guideId: '10',
                     name: 'Rishi Trivedi',
-                    photoUrl: 'https://picsum.photos/300/300?random=10',
+                    photoUrl: 'https://i.pravatar.cc/300?u=a042581f4e29026708a',
                     rating: 4.8,
                     ratePerHour: 35,
                     tags: ['Yoga', 'Ashrams', 'Meditation'],
@@ -167,7 +167,7 @@ const suggestGuidesByLocationFlow = ai.defineFlow(
                 {
                     guideId: '11',
                     name: 'Anika Desai',
-                    photoUrl: 'https://picsum.photos/300/300?random=11',
+                    photoUrl: 'https://i.pravatar.cc/300?u=a042581f4e29026709b',
                     rating: 4.7,
                     ratePerHour: 30,
                     tags: ['Foodie', 'Street Food', 'Sweets'],
@@ -176,7 +176,7 @@ const suggestGuidesByLocationFlow = ai.defineFlow(
                 {
                     guideId: '12',
                     name: 'Nikhil Bharadwaj',
-                    photoUrl: 'https://picsum.photos/300/300?random=12',
+                    photoUrl: 'https://i.pravatar.cc/300?u=a042581f4e29026700c',
                     rating: 4.8,
                     ratePerHour: 38,
                     tags: ['Mansa Devi Temple', 'Cable Car', 'Sightseeing'],
