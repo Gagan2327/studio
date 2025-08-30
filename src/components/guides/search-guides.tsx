@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useMemo, useEffect, useRef } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import { Search } from 'lucide-react';
 
 import { suggestGuidesByLocation } from '@/ai/flows/suggest-guides-by-location';
@@ -11,13 +11,13 @@ import type { Guide } from '@/lib/types';
 import { GuideList } from './guide-list';
 import { GuideSkeleton } from './guide-skeleton';
 import { Popover, PopoverContent, PopoverTrigger, PopoverAnchor } from '@/components/ui/popover';
-import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from '@/components/ui/command';
+import { Command, CommandEmpty, CommandGroup, CommandItem, CommandList } from '@/components/ui/command';
 
 
 const locations = ['Roorkee', 'Dehradun', 'Haridwar'];
 
 export function SearchGuides() {
-  const [query, setQuery] = useState('');
+  const [inputValue, setInputValue] = useState('');
   const [loading, setLoading] = useState(false);
   const [guides, setGuides] = useState<Guide[]>([]);
   const [hasSearched, setHasSearched] = useState(false);
@@ -25,15 +25,16 @@ export function SearchGuides() {
   const [popoverOpen, setPopoverOpen] = useState(false);
 
   const filteredLocations = useMemo(() => {
-    if (!query) return locations;
+    if (!inputValue) return [];
     return locations.filter((location) =>
-      location.toLowerCase().includes(query.toLowerCase())
+      location.toLowerCase().includes(inputValue.toLowerCase())
     );
-  }, [query]);
+  }, [inputValue]);
 
   const handleSearch = async (searchQuery: string) => {
     if (!searchQuery.trim()) return;
 
+    setInputValue(searchQuery);
     setLoading(true);
     setHasSearched(true);
     setGuides([]);
@@ -60,22 +61,22 @@ export function SearchGuides() {
   
   const handleFormSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    handleSearch(query);
+    handleSearch(inputValue);
   }
 
   const handleSuggestionClick = (location: string) => {
-    setQuery(location);
     handleSearch(location);
   };
-  
-  useEffect(() => {
-    if (query.length > 0 && filteredLocations.length > 0) {
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    setInputValue(value);
+    if (value.length > 0) {
       setPopoverOpen(true);
     } else {
       setPopoverOpen(false);
     }
-  }, [query, filteredLocations]);
-
+  };
 
   return (
     <div className="container mx-auto max-w-7xl">
@@ -90,18 +91,21 @@ export function SearchGuides() {
       
       <form onSubmit={handleFormSubmit} className="flex w-full max-w-2xl mx-auto items-center space-x-2 mb-12">
         <Popover open={popoverOpen} onOpenChange={setPopoverOpen}>
-          <PopoverAnchor className="w-full">
-            <Input
-              type="search"
-              placeholder="e.g., Haridwar"
-              value={query}
-              onChange={(e) => setQuery(e.target.value)}
-              className="h-12 text-lg"
-              aria-label="Search for a location"
-              autoComplete="off"
-            />
+          <PopoverAnchor asChild>
+            <div className="w-full">
+              <Input
+                type="search"
+                placeholder="e.g., Haridwar"
+                value={inputValue}
+                onChange={handleInputChange}
+                onFocus={() => { if (inputValue) setPopoverOpen(true)}}
+                className="h-12 text-lg"
+                aria-label="Search for a location"
+                autoComplete="off"
+              />
+            </div>
           </PopoverAnchor>
-          <PopoverContent className="p-0 w-[--radix-popover-trigger-width]">
+          <PopoverContent onOpenAutoFocus={(e) => e.preventDefault()} className="p-0 w-[--radix-popover-trigger-width]">
             <Command>
               <CommandList>
                 {filteredLocations.length > 0 ? (
