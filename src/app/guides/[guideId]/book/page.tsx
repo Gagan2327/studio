@@ -95,7 +95,7 @@ function BookingForm() {
                 <CardContent>
                     {step === 'details' && (
                         <form onSubmit={handleProceedToPayment} className="space-y-4">
-                            <div className="grid grid-cols-2 gap-4">
+                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                             <div className="space-y-2">
                                 <Label htmlFor="days">Number of Days</Label>
                                 <Input id="days" type="number" defaultValue="1" min="1"/>
@@ -198,7 +198,7 @@ function BookingSkeleton() {
                         <Skeleton className="h-4 w-3/4" />
                     </CardHeader>
                     <CardContent className="space-y-6">
-                        <div className="grid grid-cols-2 gap-4">
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                             <Skeleton className="h-10 w-full" />
                             <Skeleton className="h-10 w-full" />
                         </div>
