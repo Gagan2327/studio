@@ -1,9 +1,8 @@
 'use client';
 
 import { useState, useMemo } from 'react';
-import { Search, Calendar as CalendarIcon } from 'lucide-react';
+import { Search, Calendar as CalendarIcon, Filter } from 'lucide-react';
 import { format } from 'date-fns';
-
 import { suggestGuidesByLocation } from '@/ai/flows/suggest-guides-by-location';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -15,7 +14,8 @@ import { Popover, PopoverContent, PopoverTrigger, PopoverAnchor } from '@/compon
 import { Command, CommandEmpty, CommandGroup, CommandItem, CommandList } from '@/components/ui/command';
 import { Calendar } from '@/components/ui/calendar';
 import { cn } from '@/lib/utils';
-
+import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle, SheetTrigger } from '@/components/ui/sheet';
+import { GuideFilters } from './guide-filters';
 
 const locations = ['Roorkee', 'Dehradun', 'Haridwar'];
 
@@ -45,8 +45,6 @@ export function SearchGuides() {
     setPopoverOpen(false);
 
     try {
-      // In a real app, you would pass the date to the search function
-      // For now, we just log it.
       if (date) {
         console.log('Searching for guides on:', format(date, 'PPP'));
       }
@@ -98,6 +96,10 @@ export function SearchGuides() {
         </p>
       </div>
       
+      <div className="max-w-3xl mx-auto mb-8">
+        <GuideFilters />
+      </div>
+
       <form onSubmit={handleFormSubmit} className="flex w-full max-w-2xl mx-auto items-start md:items-center space-y-2 md:space-y-0 md:space-x-2 mb-12 flex-col md:flex-row">
         <Popover open={popoverOpen} onOpenChange={setPopoverOpen}>
           <PopoverAnchor asChild>
