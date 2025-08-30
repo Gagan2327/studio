@@ -1,7 +1,8 @@
 'use client';
 
-import { useState, useMemo, useEffect } from 'react';
-import { Search } from 'lucide-react';
+import { useState, useMemo } from 'react';
+import { Search, Calendar as CalendarIcon } from 'lucide-react';
+import { format } from 'date-fns';
 
 import { suggestGuidesByLocation } from '@/ai/flows/suggest-guides-by-location';
 import { Button } from '@/components/ui/button';
@@ -12,6 +13,8 @@ import { GuideList } from './guide-list';
 import { GuideSkeleton } from './guide-skeleton';
 import { Popover, PopoverContent, PopoverTrigger, PopoverAnchor } from '@/components/ui/popover';
 import { Command, CommandEmpty, CommandGroup, CommandItem, CommandList } from '@/components/ui/command';
+import { Calendar } from '@/components/ui/calendar';
+import { cn } from '@/lib/utils';
 
 
 const locations = ['Roorkee', 'Dehradun', 'Haridwar'];
@@ -23,6 +26,7 @@ export function SearchGuides() {
   const [hasSearched, setHasSearched] = useState(false);
   const { toast } = useToast();
   const [popoverOpen, setPopoverOpen] = useState(false);
+  const [date, setDate] = useState<Date>();
 
   const filteredLocations = useMemo(() => {
     if (!inputValue) return [];
@@ -41,6 +45,11 @@ export function SearchGuides() {
     setPopoverOpen(false);
 
     try {
+      // In a real app, you would pass the date to the search function
+      // For now, we just log it.
+      if (date) {
+        console.log('Searching for guides on:', format(date, 'PPP'));
+      }
       const result = await suggestGuidesByLocation({ location: searchQuery });
       if (result && result.guides) {
         setGuides(result.guides);
@@ -89,7 +98,7 @@ export function SearchGuides() {
         </p>
       </div>
       
-      <form onSubmit={handleFormSubmit} className="flex w-full max-w-2xl mx-auto items-center space-x-2 mb-12">
+      <form onSubmit={handleFormSubmit} className="flex w-full max-w-2xl mx-auto items-start md:items-center space-y-2 md:space-y-0 md:space-x-2 mb-12 flex-col md:flex-row">
         <Popover open={popoverOpen} onOpenChange={setPopoverOpen}>
           <PopoverAnchor asChild>
             <div className="w-full">
@@ -129,7 +138,30 @@ export function SearchGuides() {
           </PopoverContent>
         </Popover>
 
-        <Button type="submit" size="lg" disabled={loading}>
+        <Popover>
+          <PopoverTrigger asChild>
+            <Button
+              variant={"outline"}
+              className={cn(
+                "w-full md:w-auto h-12 text-lg justify-start text-left font-normal",
+                !date && "text-muted-foreground"
+              )}
+            >
+              <CalendarIcon className="mr-2 h-5 w-5" />
+              {date ? format(date, "PPP") : <span className="text-base">Pick a date</span>}
+            </Button>
+          </PopoverTrigger>
+          <PopoverContent className="w-auto p-0">
+            <Calendar
+              mode="single"
+              selected={date}
+              onSelect={setDate}
+              initialFocus
+            />
+          </PopoverContent>
+        </Popover>
+
+        <Button type="submit" size="lg" disabled={loading} className="h-12 w-full md:w-auto">
           <Search className="mr-2 h-5 w-5" />
           Search
         </Button>
