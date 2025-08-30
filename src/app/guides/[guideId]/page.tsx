@@ -4,15 +4,21 @@ import { Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 import Image from 'next/image';
 import Link from 'next/link';
-import { ArrowLeft, Phone, UserPlus, MessageSquare } from 'lucide-react';
+import { ArrowLeft, ChevronUp, Heart } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
 import type { Guide } from '@/lib/types';
 import { StarRating } from '@/components/guides/star-rating';
 import { Skeleton } from '@/components/ui/skeleton';
-import { ChatInterface } from '@/components/chat/chat-interface';
-import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from '@/components/ui/accordion';
+
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+
 
 function GuideProfileContent() {
   const searchParams = useSearchParams();
@@ -24,116 +30,121 @@ function GuideProfileContent() {
 
   const guide: Guide = JSON.parse(decodeURIComponent(guideData));
   const guideSlug = encodeURIComponent(guide.name.replace(/\s+/g, '-').toLowerCase());
+  
+  const itinerary = [
+      {
+          day: 1,
+          title: "Arrival to Rio de Janeiro",
+          details: {
+              morning: "Arrive in Rio de Janeiro and transfer to your hotel",
+              afternoon: "Free time to relax or explore the nearby area",
+              evening: "Welcome dinner at a traditional Brazilian restaurant"
+          }
+      },
+      {
+          day: 2,
+          title: "Rio de Janeiro Highlights",
+          details: {
+              morning: "Visit the Christ the Redeemer statue",
+              afternoon: "Explore the Sugarloaf Mountain",
+              evening: "Enjoy a samba show"
+          }
+      }
+  ]
 
   return (
     <div className="w-full max-w-4xl mx-auto animate-in fade-in slide-in-from-bottom-4 duration-500">
-      <div className="relative h-64 md:h-80 w-full rounded-lg overflow-hidden mb-8 shadow-lg">
-        <Image
-          src={guide.photoUrl}
-          alt={`Photo of ${guide.name}`}
-          fill
-          className="object-cover"
-          data-ai-hint="guide photo"
-          priority
-        />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
-        <div className="absolute bottom-6 left-6 text-white">
-          <h1 className="text-4xl font-extrabold font-headline">{guide.name}</h1>
-          <div className="flex items-center gap-2 mt-1">
-            <StarRating rating={guide.rating} />
-            <span className="text-lg font-medium">({guide.rating})</span>
-          </div>
-        </div>
-      </div>
-      
-      <Card className="shadow-lg mb-8">
-        <CardContent className="p-6 md:p-8 space-y-6">
-          <div>
-            <h2 className="text-2xl font-bold font-headline mb-3">About Me</h2>
-            <p className="text-muted-foreground text-base leading-relaxed">{guide.description}</p>
-          </div>
-          
-          <div>
-            <h2 className="text-2xl font-bold font-headline mb-4">Specialties</h2>
-            <div className="flex flex-wrap gap-3">
-              {guide.tags.map((tag) => (
-                <Badge key={tag} className="text-base px-4 py-2" variant="default">
-                  {tag}
-                </Badge>
-              ))}
-            </div>
-            <p className="text-sm text-muted-foreground mt-4">
-                These tags represent my areas of expertise and the unique experiences I offer. Whether it's historical tours, culinary adventures, or off-the-beaten-path explorations, I'm here to make your trip unforgettable.
-            </p>
-          </div>
-          
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-4">
-            <Button size="lg" className="transition-transform hover:scale-105">
-              <Phone className="mr-2 h-5 w-5" />
-              Call
+      <div className="p-4">
+        <div className="flex justify-between items-center mb-4">
+            <Button asChild variant="outline" size="icon" className="rounded-full h-10 w-10">
+                <Link href="/dashboard">
+                    <ArrowLeft className="h-5 w-5" />
+                </Link>
             </Button>
-             <Sheet>
-              <SheetTrigger asChild>
-                <Button size="lg" className="transition-transform hover:scale-105">
-                  <MessageSquare className="mr-2 h-5 w-5" />
-                  Message
-                </Button>
-              </SheetTrigger>
-              <SheetContent side="right" className="w-full sm:max-w-md p-0">
-                <ChatInterface guideName={guide.name} />
-              </SheetContent>
-            </Sheet>
-            <Button size="lg" className="transition-transform hover:scale-105" asChild>
+             <h1 className="font-bold">Iconic Brazil</h1>
+            <Button variant="outline" size="icon" className="rounded-full h-10 w-10">
+                <Heart className="h-5 w-5" />
+            </Button>
+        </div>
+        <p className="text-center text-muted-foreground text-sm">Wed, Oct 21 - Sun, Nov 1</p>
+      </div>
+
+       <Tabs defaultValue="schedule" className="w-full mt-4">
+        <TabsList className="grid w-full grid-cols-3 bg-secondary rounded-full">
+            <TabsTrigger value="schedule" className="rounded-full">Tour schedule</TabsTrigger>
+            <TabsTrigger value="accommodation" className="rounded-full">Accomodation</TabsTrigger>
+            <TabsTrigger value="details" className="rounded-full">Booking details</TabsTrigger>
+        </TabsList>
+        <TabsContent value="schedule">
+            <Card className="shadow-none border-none bg-transparent">
+                <CardContent className="p-2 space-y-6">
+                 <h2 className="text-xl font-bold mt-6 mb-2">8-Days Brazil Adventure</h2>
+                 <Accordion type="single" collapsible defaultValue="item-1">
+                    {itinerary.map(item => (
+                         <AccordionItem value={`item-${item.day}`} key={item.day} className="border-none mb-2">
+                             <AccordionTrigger className="bg-card p-4 rounded-lg hover:no-underline">
+                                <div className="flex items-center gap-4">
+                                     <Image src={`https://picsum.photos/100?random=${item.day}`} alt={item.title} width={60} height={60} className="rounded-lg" />
+                                     <div>
+                                         <p className="text-muted-foreground text-sm">Day {item.day}</p>
+                                         <p className="font-bold text-base text-left">{item.title}</p>
+                                     </div>
+                                 </div>
+                             </AccordionTrigger>
+                             <AccordionContent className="p-4 text-muted-foreground">
+                                 <div className="space-y-3">
+                                     <div>
+                                         <h3 className="font-semibold text-foreground">Morning</h3>
+                                         <p>{item.details.morning}</p>
+                                     </div>
+                                      <div>
+                                         <h3 className="font-semibold text-foreground">Afternoon</h3>
+                                         <p>{item.details.afternoon}</p>
+                                     </div>
+                                      <div>
+                                         <h3 className="font-semibold text-foreground">Evening</h3>
+                                         <p>{item.details.evening}</p>
+                                     </div>
+                                 </div>
+                             </AccordionContent>
+                         </AccordionItem>
+                    ))}
+                 </Accordion>
+                </CardContent>
+            </Card>
+        </TabsContent>
+      </Tabs>
+      
+        <div className="fixed bottom-0 left-0 right-0 p-4 bg-background border-t">
+             <Button size="lg" className="w-full h-14 rounded-full text-lg" asChild>
               <Link href={`/guides/${guideSlug}/book?data=${guideData}`}>
-                <UserPlus className="mr-2 h-5 w-5" />
-                Hire Now
+                Book a tour
               </Link>
             </Button>
-          </div>
-        </CardContent>
-      </Card>
+        </div>
     </div>
   );
 }
 
 function GuideProfileSkeleton() {
     return (
-        <div className="w-full max-w-4xl mx-auto">
-            <Skeleton className="h-80 w-full rounded-lg mb-8" />
-            <Card>
-                <CardContent className="p-8 space-y-6">
-                    <Skeleton className="h-8 w-1/4 mb-3" />
-                    <Skeleton className="h-5 w-full" />
-                    <Skeleton className="h-5 w-full" />
-                    <Skeleton className="h-5 w-3/4" />
-                    <div className="pt-4">
-                        <Skeleton className="h-8 w-1/3 mb-4" />
-                        <div className="flex flex-wrap gap-3">
-                            <Skeleton className="h-10 w-24" />
-                            <Skeleton className="h-10 w-32" />
-                            <Skeleton className="h-10 w-28" />
-                        </div>
-                    </div>
-                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-4">
-                        <Skeleton className="h-12 w-full" />
-                        <Skeleton className="h-12 w-full" />
-                        <Skeleton className="h-12 w-full" />
-                    </div>
-                </CardContent>
-            </Card>
+        <div className="w-full max-w-4xl mx-auto p-4">
+            <Skeleton className="h-10 w-full rounded-full mb-4" />
+            <Skeleton className="h-6 w-1/2 mx-auto mb-6" />
+            <Skeleton className="h-12 w-full rounded-full mb-8" />
+             <div className="space-y-4 mt-8">
+                <Skeleton className="h-20 w-full rounded-lg" />
+                <Skeleton className="h-20 w-full rounded-lg" />
+                <Skeleton className="h-20 w-full rounded-lg" />
+            </div>
+            <Skeleton className="fixed bottom-0 left-0 right-0 h-20 w-full" />
         </div>
     );
 }
 
 export default function GuideProfilePage() {
   return (
-    <main className="min-h-screen bg-secondary p-4 sm:p-8">
-       <Button asChild variant="outline" className="absolute top-4 left-4 z-10 bg-background/50 hover:bg-background">
-        <Link href="/dashboard">
-          <ArrowLeft className="mr-2 h-4 w-4" />
-          Back to Search
-        </Link>
-      </Button>
+    <main className="min-h-screen bg-background pb-24">
       <Suspense fallback={<GuideProfileSkeleton />}>
         <GuideProfileContent />
       </Suspense>
