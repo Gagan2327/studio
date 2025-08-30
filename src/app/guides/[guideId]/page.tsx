@@ -1,10 +1,10 @@
 'use client';
 
-import { Suspense, useState } from 'react';
+import { Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 import Image from 'next/image';
 import Link from 'next/link';
-import { ArrowLeft, Phone, UserPlus, MessageSquare, Calendar as CalendarIcon, CreditCard, PartyPopper } from 'lucide-react';
+import { ArrowLeft, Phone, UserPlus, MessageSquare } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -13,47 +13,17 @@ import { StarRating } from '@/components/guides/star-rating';
 import { Skeleton } from '@/components/ui/skeleton';
 import { ChatInterface } from '@/components/chat/chat-interface';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger, DialogDescription, DialogFooter } from '@/components/ui/dialog';
-import { Label } from '@/components/ui/label';
-import { Input } from '@/components/ui/input';
-import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
-import { Calendar } from '@/components/ui/calendar';
-import { format } from 'date-fns';
-import { cn } from '@/lib/utils';
-import { useToast } from '@/hooks/use-toast';
-
 
 function GuideProfileContent() {
   const searchParams = useSearchParams();
   const guideData = searchParams.get('data');
-  const [date, setDate] = useState<Date>();
-  const [step, setStep] = useState<'details' | 'payment' | 'confirmed'>('details');
-  const { toast } = useToast();
 
   if (!guideData) {
     return <GuideProfileSkeleton />;
   }
 
   const guide: Guide = JSON.parse(decodeURIComponent(guideData));
-
-  const handleProceedToPayment = (e: React.FormEvent) => {
-    e.preventDefault();
-    setStep('payment');
-  }
-
-  const handleConfirmPayment = (e: React.FormEvent) => {
-    e.preventDefault();
-    setStep('confirmed');
-    toast({
-        title: "Booking Confirmed!",
-        description: `You have successfully booked ${guide.name}.`,
-    });
-  }
-  
-  const resetBooking = () => {
-    setStep('details');
-    setDate(undefined);
-  }
+  const guideSlug = encodeURIComponent(guide.name.replace(/\s+/g, '-').toLowerCase());
 
   return (
     <div className="w-full max-w-4xl mx-auto animate-in fade-in slide-in-from-bottom-4 duration-500">
@@ -113,104 +83,12 @@ function GuideProfileContent() {
                 <ChatInterface guideName={guide.name} />
               </SheetContent>
             </Sheet>
-            <Dialog onOpenChange={(open) => !open && resetBooking()}>
-              <DialogTrigger asChild>
-                <Button size="lg" className="transition-transform hover:scale-105">
-                  <UserPlus className="mr-2 h-5 w-5" />
-                  Hire Now
-                </Button>
-              </DialogTrigger>
-              <DialogContent className="sm:max-w-md">
-                <DialogHeader>
-                  <DialogTitle>Book {guide.name}</DialogTitle>
-                  <DialogDescription>
-                    {step === 'details' && 'Complete the details below to schedule your tour.'}
-                    {step === 'payment' && 'Review your details and confirm payment.'}
-                    {step === 'confirmed' && 'Your booking is complete!'}
-                  </DialogDescription>
-                </DialogHeader>
-                {step === 'details' && (
-                  <form onSubmit={handleProceedToPayment} className="space-y-4">
-                      <div className="flex items-center justify-between rounded-lg border p-3 bg-muted/50">
-                          <span className="font-semibold">Rate</span>
-                          <span className="text-primary font-bold text-lg">₹{guide.ratePerHour}/hour</span>
-                      </div>
-                    <div className="grid grid-cols-2 gap-4">
-                      <div className="space-y-2">
-                          <Label htmlFor="days">Number of Days</Label>
-                          <Input id="days" type="number" defaultValue="1" min="1"/>
-                      </div>
-                      <div className="space-y-2">
-                          <Label htmlFor="members">Number of Members</Label>
-                          <Input id="members" type="number" defaultValue="1" min="1" />
-                      </div>
-                    </div>
-                    <div className="space-y-2">
-                      <Label htmlFor="date">Date</Label>
-                      <Popover>
-                          <PopoverTrigger asChild>
-                          <Button
-                              variant={"outline"}
-                              className={cn(
-                              "w-full justify-start text-left font-normal",
-                              !date && "text-muted-foreground"
-                              )}
-                          >
-                              <CalendarIcon className="mr-2 h-4 w-4" />
-                              {date ? format(date, "PPP") : <span>Pick a date</span>}
-                          </Button>
-                          </PopoverTrigger>
-                          <PopoverContent className="w-auto p-0">
-                          <Calendar
-                              mode="single"
-                              selected={date}
-                              onSelect={setDate}
-                              initialFocus
-                          />
-                          </PopoverContent>
-                      </Popover>
-                    </div>
-                    <div className="space-y-2">
-                      <Label htmlFor="duration">Time Duration (in hours)</Label>
-                      <Input id="duration" type="number" placeholder="e.g., 3" min="1"/>
-                    </div>
-                    <DialogFooter className="pt-4">
-                      <Button type="submit" className="w-full">Next</Button>
-                    </DialogFooter>
-                  </form>
-                )}
-                {step === 'payment' && (
-                    <form onSubmit={handleConfirmPayment} className="space-y-6">
-                        <div className="text-center rounded-lg border p-4 bg-muted/50">
-                            <p className="text-muted-foreground">Total Amount</p>
-                            <p className="text-4xl font-bold text-primary">₹{guide.ratePerHour * 3}</p>
-                            <p className="text-xs text-muted-foreground">(for 3 hours)</p>
-                        </div>
-                        <div className="space-y-2">
-                            <Label htmlFor="card">Card Details</Label>
-                            <div className="flex items-center border rounded-md px-3">
-                                <CreditCard className="text-muted-foreground mr-3" />
-                                <Input id="card" placeholder="XXXX XXXX XXXX XXXX" className="border-0 px-0 focus-visible:ring-0 focus-visible:ring-offset-0" />
-                            </div>
-                        </div>
-                         <DialogFooter className="pt-4">
-                            <Button onClick={() => setStep('details')} variant="outline">Back</Button>
-                            <Button type="submit" className="w-full">Confirm Payment</Button>
-                        </DialogFooter>
-                    </form>
-                )}
-                {step === 'confirmed' && (
-                    <div className="py-8 text-center flex flex-col items-center justify-center">
-                        <PartyPopper className="h-16 w-16 text-primary mb-4" />
-                        <h3 className="text-2xl font-bold text-primary">Booking Confirmed!</h3>
-                        <p className="text-muted-foreground mt-2 max-w-sm">Your tour with {guide.name} is scheduled. Check your email for the details.</p>
-                         <DialogFooter className="pt-6">
-                           <Button onClick={() => document.querySelector('[data-radix-dialog-close]').click()} className="w-full">Done</Button>
-                        </DialogFooter>
-                    </div>
-                )}
-              </DialogContent>
-            </Dialog>
+            <Button size="lg" className="transition-transform hover:scale-105" asChild>
+              <Link href={`/guides/${guideSlug}/book?data=${guideData}`}>
+                <UserPlus className="mr-2 h-5 w-5" />
+                Hire Now
+              </Link>
+            </Button>
           </div>
         </CardContent>
       </Card>
@@ -262,5 +140,3 @@ export default function GuideProfilePage() {
     </main>
   );
 }
-
-    
