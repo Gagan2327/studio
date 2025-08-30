@@ -1,8 +1,26 @@
+'use client';
+
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { ArrowRight, User, UserCheck } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import Logo from '@/components/logo';
+
+function Footer() {
+  const [year, setYear] = useState(new Date().getFullYear());
+
+  useEffect(() => {
+    setYear(new Date().getFullYear());
+  }, []);
+
+  return (
+    <footer className="absolute bottom-4 text-center text-sm text-muted-foreground">
+      © {year} GuidiGo. All Rights Reserved.
+    </footer>
+  );
+}
+
 
 export default function ChoicePage() {
   return (
@@ -49,9 +67,7 @@ export default function ChoicePage() {
           </CardContent>
         </Card>
       </div>
-       <footer className="absolute bottom-4 text-center text-sm text-muted-foreground">
-        © {new Date().getFullYear()} GuidiGo. All Rights Reserved.
-      </footer>
+       <Footer />
     </main>
   );
 }

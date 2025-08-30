@@ -30,7 +30,7 @@ export default function RootLayout({
           rel="stylesheet"
         />
       </head>
-      <body className={cn('font-body antialiased', manrope.variable)}>
+      <body className={cn('font-body antialiased', manrope.variable)} suppressHydrationWarning>
         {children}
         <Toaster />
       </body>
