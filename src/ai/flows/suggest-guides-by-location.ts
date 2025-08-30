@@ -59,7 +59,8 @@ const suggestGuidesByLocationFlow = ai.defineFlow(
     outputSchema: SuggestGuidesByLocationOutputSchema,
   },
   async input => {
-    if (input.location.toLowerCase().trim() === 'roorkee') {
+    const location = input.location.toLowerCase().trim();
+    if (location === 'roorkee') {
       return {
         guides: [
           {
@@ -96,6 +97,80 @@ const suggestGuidesByLocationFlow = ai.defineFlow(
           },
         ],
       };
+    } else if (location === 'dehradun') {
+        return {
+            guides: [
+                {
+                    guideId: '5',
+                    name: 'Kavya Joshi',
+                    photoUrl: 'https://picsum.photos/300/300?random=5',
+                    rating: 4.9,
+                    tags: ['Sightseeing', 'Mussoorie', 'Cafes'],
+                    description: 'Your friendly guide to the Queen of Hills, Mussoorie, and the coziest cafes in Dehradun.',
+                },
+                {
+                    guideId: '6',
+                    name: 'Arjun Negi',
+                    photoUrl: 'https://picsum.photos/300/300?random=6',
+                    rating: 4.8,
+                    tags: ['Trekking', 'Robber\'s Cave', 'Nature'],
+                    description: 'Adventure awaits! I lead exciting treks and tours to places like Robber\'s Cave.',
+                },
+                {
+                    guideId: '7',
+                    name: 'Ishaan Verma',
+                    photoUrl: 'https://picsum.photos/300/300?random=7',
+                    rating: 4.7,
+                    tags: ['Forest Research Institute', 'History', 'Museums'],
+                    description: 'Let\'s dive into the rich history of Dehradun, with special tours of the Forest Research Institute.',
+                },
+                {
+                    guideId: '8',
+                    name: 'Diya Bhandari',
+                    photoUrl: 'https://picsum.photos/300/300?random=8',
+                    rating: 4.9,
+                    tags: ['Shopping', 'Local Markets', 'Food'],
+                    description: 'I\'ll help you find the best souvenirs and street food at Paltan Bazaar and other local hotspots.',
+                },
+            ]
+        }
+    } else if (location === 'haridwar') {
+        return {
+            guides: [
+                 {
+                    guideId: '9',
+                    name: 'Aditi Sharma',
+                    photoUrl: 'https://picsum.photos/300/300?random=9',
+                    rating: 4.9,
+                    tags: ['Spiritual', 'Ganga Aarti', 'Temples'],
+                    description: 'Experience the divine Ganga Aarti at Har Ki Pauri and explore ancient temples with a local expert.',
+                },
+                {
+                    guideId: '10',
+                    name: 'Rishi Trivedi',
+                    photoUrl: 'https://picsum.photos/300/300?random=10',
+                    rating: 4.8,
+                    tags: ['Yoga', 'Ashrams', 'Meditation'],
+                    description: 'Discover tranquility and learn yoga at renowned ashrams along the banks of the Ganges.',
+                },
+                {
+                    guideId: '11',
+                    name: 'Anika Desai',
+                    photoUrl: 'https://picsum.photos/300/300?random=11',
+                    rating: 4.7,
+                    tags: ['Foodie', 'Street Food', 'Sweets'],
+                    description: 'A culinary tour of Haridwar, from spicy chaat to delicious local sweets. Your taste buds will thank you!',
+                },
+                {
+                    guideId: '12',
+                    name: 'Nikhil Bharadwaj',
+                    photoUrl: 'https://picsum.photos/300/300?random=12',
+                    rating: 4.8,
+                    tags: ['Mansa Devi Temple', 'Cable Car', 'Sightseeing'],
+                    description: 'Join me for a panoramic view of Haridwar from the Mansa Devi Temple, accessible by a thrilling cable car ride.',
+                }
+            ]
+        }
     }
 
     const {output} = await prompt(input);
