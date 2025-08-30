@@ -1,5 +1,2 @@
-# Firebase Studio
+A simple Next.js and tailwind css project of web application for dedicated problem statement of SIH hackathon related to tour and travel by organization of govt of kerala.
 
-This is a NextJS starter in Firebase Studio.
-
-To get started, take a look at src/app/page.tsx.
