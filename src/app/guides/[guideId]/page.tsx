@@ -4,13 +4,14 @@ import { Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 import Image from 'next/image';
 import Link from 'next/link';
-import { ArrowLeft, Phone, MessageCircle, UserPlus } from 'lucide-react';
+import { ArrowLeft, Phone, UserPlus } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import type { Guide } from '@/lib/types';
 import { StarRating } from '@/components/guides/star-rating';
 import { Skeleton } from '@/components/ui/skeleton';
+import { ChatInterface } from '@/components/chat/chat-interface';
 
 function GuideProfileContent() {
   const searchParams = useSearchParams();
@@ -43,7 +44,7 @@ function GuideProfileContent() {
         </div>
       </div>
       
-      <Card className="shadow-lg">
+      <Card className="shadow-lg mb-8">
         <CardContent className="p-6 md:p-8 space-y-6">
           <div>
             <h2 className="text-2xl font-bold font-headline mb-3">About Me</h2>
@@ -64,14 +65,10 @@ function GuideProfileContent() {
             </p>
           </div>
           
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-4">
             <Button size="lg" className="transition-transform hover:scale-105">
               <Phone className="mr-2 h-5 w-5" />
               Call
-            </Button>
-            <Button size="lg" className="transition-transform hover:scale-105">
-              <MessageCircle className="mr-2 h-5 w-5" />
-              Message
             </Button>
             <Button size="lg" className="transition-transform hover:scale-105">
               <UserPlus className="mr-2 h-5 w-5" />
@@ -80,6 +77,8 @@ function GuideProfileContent() {
           </div>
         </CardContent>
       </Card>
+
+      <ChatInterface guideName={guide.name} />
     </div>
   );
 }
