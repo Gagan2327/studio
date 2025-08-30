@@ -67,7 +67,7 @@ const suggestGuidesByLocationFlow = ai.defineFlow(
           {
             guideId: '1',
             name: 'Aarav Sharma',
-            photoUrl: 'https://i.pravatar.cc/300?u=a042581f4e29026704d',
+            photoUrl: 'https://i.pravatar.cc/300?u=man-indian-1',
             rating: 4.8,
             ratePerHour: 25,
             tags: ['History', 'Architecture', 'IIT Roorkee'],
@@ -76,7 +76,7 @@ const suggestGuidesByLocationFlow = ai.defineFlow(
           {
             guideId: '2',
             name: 'Priya Singh',
-            photoUrl: 'https://i.pravatar.cc/300?u=a042581f4e29026704e',
+            photoUrl: 'https://i.pravatar.cc/300?u=woman-indian-1',
             rating: 4.9,
             ratePerHour: 30,
             tags: ['Foodie', 'Local Cuisine', 'Street Food'],
@@ -85,7 +85,7 @@ const suggestGuidesByLocationFlow = ai.defineFlow(
           {
             guideId: '3',
             name: 'Rohan Gupta',
-            photoUrl: 'https://i.pravatar.cc/300?u=a042581f4e29026704f',
+            photoUrl: 'https://i.pravatar.cc/300?u=man-indian-2',
             rating: 4.7,
             ratePerHour: 20,
             tags: ['Adventure', 'Nature', 'Ganges Canal'],
@@ -94,7 +94,7 @@ const suggestGuidesByLocationFlow = ai.defineFlow(
           {
             guideId: '4',
             name: 'Meera Chauhan',
-            photoUrl: 'https://i.pravatar.cc/300?u=a042581f4e29026704a',
+            photoUrl: 'https://i.pravatar.cc/300?u=woman-indian-2',
             rating: 4.8,
             ratePerHour: 28,
             tags: ['Spiritual', 'Temples', 'Yoga'],
@@ -108,7 +108,7 @@ const suggestGuidesByLocationFlow = ai.defineFlow(
                 {
                     guideId: '5',
                     name: 'Kavya Joshi',
-                    photoUrl: 'https://i.pravatar.cc/300?u=a042581f4e29026704b',
+                    photoUrl: 'https://i.pravatar.cc/300?u=woman-indian-3',
                     rating: 4.9,
                     ratePerHour: 35,
                     tags: ['Sightseeing', 'Mussoorie', 'Cafes'],
@@ -117,7 +117,7 @@ const suggestGuidesByLocationFlow = ai.defineFlow(
                 {
                     guideId: '6',
                     name: 'Arjun Negi',
-                    photoUrl: 'https://i.pravatar.cc/300?u=a042581f4e29026704c',
+                    photoUrl: 'https://i.pravatar.cc/300?u=man-indian-3',
                     rating: 4.8,
                     ratePerHour: 30,
                     tags: ['Trekking', 'Robber\'s Cave', 'Nature'],
@@ -126,7 +126,7 @@ const suggestGuidesByLocationFlow = ai.defineFlow(
                 {
                     guideId: '7',
                     name: 'Ishaan Verma',
-                    photoUrl: 'https://i.pravatar.cc/300?u=a042581f4e29026705d',
+                    photoUrl: 'https://i.pravatar.cc/300?u=man-indian-4',
                     rating: 4.7,
                     ratePerHour: 28,
                     tags: ['Forest Research Institute', 'History', 'Museums'],
@@ -135,7 +135,7 @@ const suggestGuidesByLocationFlow = ai.defineFlow(
                 {
                     guideId: '8',
                     name: 'Diya Bhandari',
-                    photoUrl: 'https://i.pravatar.cc/300?u=a042581f4e29026706e',
+                    photoUrl: 'https://i.pravatar.cc/300?u=woman-indian-4',
                     rating: 4.9,
                     ratePerHour: 32,
                     tags: ['Shopping', 'Local Markets', 'Food'],
@@ -149,7 +149,7 @@ const suggestGuidesByLocationFlow = ai.defineFlow(
                  {
                     guideId: '9',
                     name: 'Aditi Sharma',
-                    photoUrl: 'https://i.pravatar.cc/300?u=a042581f4e29026707f',
+                    photoUrl: 'https://i.pravatar.cc/300?u=woman-indian-5',
                     rating: 4.9,
                     ratePerHour: 40,
                     tags: ['Spiritual', 'Ganga Aarti', 'Temples'],
@@ -158,7 +158,7 @@ const suggestGuidesByLocationFlow = ai.defineFlow(
                 {
                     guideId: '10',
                     name: 'Rishi Trivedi',
-                    photoUrl: 'https://i.pravatar.cc/300?u=a042581f4e29026708a',
+                    photoUrl: 'https://i.pravatar.cc/300?u=man-indian-5',
                     rating: 4.8,
                     ratePerHour: 35,
                     tags: ['Yoga', 'Ashrams', 'Meditation'],
@@ -167,7 +167,7 @@ const suggestGuidesByLocationFlow = ai.defineFlow(
                 {
                     guideId: '11',
                     name: 'Anika Desai',
-                    photoUrl: 'https://i.pravatar.cc/300?u=a042581f4e29026709b',
+                    photoUrl: 'https://i.pravatar.cc/300?u=woman-indian-6',
                     rating: 4.7,
                     ratePerHour: 30,
                     tags: ['Foodie', 'Street Food', 'Sweets'],
@@ -176,7 +176,7 @@ const suggestGuidesByLocationFlow = ai.defineFlow(
                 {
                     guideId: '12',
                     name: 'Nikhil Bharadwaj',
-                    photoUrl: 'https://i.pravatar.cc/300?u=a042581f4e29026700c',
+                    photoUrl: 'https://i.pravatar.cc/300?u=man-indian-6',
                     rating: 4.8,
                     ratePerHour: 38,
                     tags: ['Mansa Devi Temple', 'Cable Car', 'Sightseeing'],
